@@ -1,0 +1,137 @@
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td ,div, span{ 
+	margin:0;
+	padding:0; 
+	box-sizing: content-box; 
+	font-family: "PingFangSC-Light","microsoft yahei";
+}
+body{
+	font-size: 0.32rem;
+	height: 100%;
+}
+h1, h2, h3, h4, h5, h6{ 
+	font-size:100%; 
+	font-weight: normal;
+}
+address, cite, dfn, em, var,i { 
+	font-style:normal; 
+}
+code, kbd, pre, samp { 
+	font-family:couriernew, courier, monospace; 
+}
+small{ 
+	font-size:12px; 
+}
+ul, ol ,li , dd{ 
+	list-style:none; 
+}
+a { 
+	color: inherit;
+	text-decoration:none; 
+}
+a:hover { 
+	color: inherit;
+	text-decoration:none; 
+}
+sup { 
+	vertical-align:text-top; 
+}
+sub{ 
+	vertical-align:text-bottom; 
+}
+legend { 
+	color:#000; 
+}
+fieldset, img { 
+	border:0; 
+}
+button, input, select, textarea { 
+	font-size:100%; 
+}
+table { 
+	border-collapse:collapse; 
+	border-spacing:0; 
+}
+input {
+	outline: none;
+}
+textarea{
+	overflow: hidden;
+	resize: none;
+}
+/* button样式 */
+.button{
+	border: none;
+	background: none;
+	outline: none;
+	cursor: pointer;
+}
+/* 溢出省略 */
+.ellipsis {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+/* 清除浮动 */
+.clearfix{
+	*zoom:1;
+} 
+/* 针对IE6/7 hack，触发IE6/7的haslayout，以清除浮动 */
+.clearfix:before,.clearfix:after{
+	display:block;
+	content:"";
+	height:0;
+	visibility: hidden;
+	overflow: hidden;
+}
+.clearfix:after{
+	clear:both;
+}
+.f_l{
+	float: left;
+}
+.f_r{
+	float: right;
+}
+/* vue样式初始化 */
+[v-cloak]{
+	display: none !important;
+}
+/*提示框样式*/
+.dialog-wrap {
+	position: absolute;
+}
+.dialog-shadow {
+	z-index: 99;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+}
+.dialog-content {
+	z-index: 100;
+	padding: .2rem;
+	text-align: center;
+	min-width: 3rem;
+	background: rgba(0, 0, 0, 0.6);
+	border-radius: .08rem;
+	-webkit-box-shadow: 0px 0px 2px 1px #666;
+	box-shadow: 0px 0px 2px 1px #666;
+	color: #fff;
+}
+.dialog-ok {
+	border: 1px solid #FF4545;
+	color: #FF4545;
+	line-height: .8rem;
+	text-align: center;
+	width: 94%;
+	display: inline-block;
+	margin-bottom: .16rem;
+	margin-top: .5rem;
+}
+.translate {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}

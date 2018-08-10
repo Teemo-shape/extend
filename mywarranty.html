@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1,maximum-scale=1, minimum-scale=1">
+	    <meta name="format-detection" content="telephone=no"/>
+		<title>电视延保凭证</title>
+		<link rel="stylesheet" href="css/public.css"></link>
+		<link rel="stylesheet" href="css/mywarranty.css">
+		<script>
+	      	var deviceWidth = document.documentElement.clientWidth;
+	      	if(deviceWidth > 750) deviceWidth = 750;
+	     	document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+	    </script>
+	</head>
+	<body>
+		<section class="mywarranty-wrap">
+			<p class="mywarranty-phone "></p>
+			<p class="mywarranty-count "></p>
+			<h2 class="mywarranty-title">电视延保凭证</h2>
+			<!--轮播图-->
+			<div class="swiper-box">
+				<ul class="card-list clearfix">
+				</ul>
+				<!--轮播点-->
+				<ul class="point-list clearfix">
+				</ul>
+			</div>
+		</section>
+	</body>
+	<script src="js/zepto.js"></script>
+	<script src="js/data.js"></script>
+	<script>
+		$(function () {
+			//获取字符串中指定参数
+			function GetQueryString(name) {
+			    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			    var r = window.location.search.substr(1).match(reg);
+			    if(r!=null)return  unescape(r[2]); return null;
+			}
+			var phone = GetQueryString("phone");
+			var code = GetQueryString("code");
+			
+			if(phone) {
+				creatHTML ();
+			}
+			if(code) {
+                creatHTML ();
+			}
+			creatHTML();
+			function creatHTML() {
+				let listHtml = '';
+				var patterns = phoneRes.data.details;
+				$(".mywarranty-phone").html(`您绑定的手机号为:${phoneRes.data.phone}`);
+				$(".mywarranty-count").html(`绑定延保的数量有${patterns.length}个`);
+
+				for(var i=0; i<patterns.length; i++) {
+					var pattern = patterns[i];
+					var itemHtml = `<li class="card-item">
+						<a class="location" href="credentials.html?${pattern.id}">
+							<div class ="card">
+								<img src="img/card.jpg">
+								<p class="card-serial">NO:${pattern.sn}</p>
+								<ol class="card-msg clearfix">
+									<li class = 'card-model'>机型：${pattern.model}</li>
+									<li class = 'card-time'>延长时间：${pattern.note}</li>
+									<li class = 'card-type'>延保类型：${pattern.type}</li>
+								</ol>
+							</div>
+							<div class="card-details">
+								<p class="product-code">产品编码：${pattern.productCode}</p>
+								<p class="product-model">产品型号：${pattern.pattern}</p>
+								<p class="product-type">产品类型：${pattern.warranty}个月</p>
+							</div>
+						</a>
+					</li>`;
+					var pointHtml = `<li class="point-item"></li>`
+					$(".card-list").append(itemHtml)
+					$(".point-list").append(pointHtml)
+				}
+                if(patterns.length==1){
+                    $(".point-list").html('');
+                    $(".card-list").css("left","0.64rem");
+                    return false;
+                }
+                swiper ();
+			}
+            var oList = $(".card-list");
+            var aLi  = $(".card-item");
+
+            var oList2 = $(".point-list");
+            var aLi2 = $(".point-item"); // 圆点
+            var aLiWidth = aLi.width();
+            oList.css('width',aLiWidth*(aLi.length+1));
+            
+            
+            var screenWidth = $(document).width();
+            var rem = parseInt($("html").css("font-size"));
+			var onceWidth = 17 + aLiWidth;
+            var left = (screenWidth - aLiWidth)/2/rem;	//除以2表示左右相等，除以50拿到rem
+
+            $(".card-list").css("left", left + "rem");
+
+            $(aLi2[0]).addClass("active");
+            var  num;
+           	function moveRight () {
+				var  num;
+				aLi2.each(function () {
+					if($(this).hasClass("active")) {
+                        num = $(this).index() - 1;
+                        console.log(num);
+                        if(num < 0) {
+                            num = aLi.length-1;
+                        }
+					}
+					//每次改变，对应索引index
+					var newLeft = left - num*onceWidth/rem;
+                    oList.animate({
+                        left: newLeft + "rem"
+					},300)
+                });
+				$(aLi2[num]).addClass("active").siblings().removeClass("active");
+			}
+			function moveLeft () {
+                var num;
+                aLi2.each(function () {
+                    if($(this).hasClass("active")) {
+                        num = $(this).index() + 1;
+                        if(num > aLi.length-1) {
+                            num = 0;
+                        }
+                    }
+					var newLeft = left - num*onceWidth/rem;
+                    $(".card-list").animate({
+                        left: newLeft + "rem"
+                    },300)
+                });
+                $(aLi2[num]).addClass("active").siblings().removeClass("active");
+			}
+			$(".location").click(function(e){
+//				e.preventDefault()
+				alert("点击")			
+				location.href = "index.html";
+			})
+			$(".swiper-box").bind("t")
+			function swiper () {
+                var deltaX;
+                var endPosition = {};
+                var startPosition  = {};
+                $(".swiper-box").bind('touchstart', function(e){
+                	deltaX = 0;
+                	e.preventDefault();
+                    var touch = e.touches[0];
+                    startPosition = {
+                        x: touch.pageX,
+                        y: touch.pageY
+                    }
+                }) .bind('touchmove', function(e){
+//              	e.preventDefault();                                                        
+                }).bind('touchend touchcancel', function(e){
+                	
+                	var touch = e.changedTouches[0];
+                	endPosition = {
+                        x: touch.pageX,
+                        y: touch.pageY
+                    };
+                	deltaX = endPosition.x - startPosition.x;
+                    deltaY = endPosition.y - startPosition.y;
+                    if(deltaX < -20) { // 向左划动
+                        moveLeft();
+                    } else if (deltaX > 20) { // 向右划动
+                        moveRight();
+                    } else {
+                    	console.log(e.target)
+                    	var ele = e.target;
+                    	if ($(ele).closest(".location").length>0) {
+                    		var selectorA = $(ele).closest(".location");
+                    		var index = selectorA.parent().index();
+							var patterns = phoneRes.data.details;
+							var id = patterns[index].id;
+                    		console.log(Array.prototype.slice.call(selectorA[0].parentNode.parentNode.children).indexOf(selectorA[0].parentNode));
+                    		location.href = "credentials.html?id="+id;
+                    	}
+                    }
+                });
+			}
+        })
+	</script>
+</html>
+

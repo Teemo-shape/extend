@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="initial-scale=1,maximum-scale=1, minimum-scale=1">
+	    <meta name="format-detection" content="telephone=no"/>
+		<title>绑定手机</title>
+		<link rel="stylesheet" href="css/public.css"></link>
+		<link rel="stylesheet" href="css/index.css">
+		<script>
+	      	var deviceWidth = document.documentElement.clientWidth;
+	      	if(deviceWidth > 750) deviceWidth = 750;
+	     	document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+	    </script>
+	</head>
+	<body>
+		<section class="binding-wrap">
+			<div class="english">BINDING</div>
+			<h1 class="title-content">电视延保凭证绑定手机</h1>
+			<div class='binding'>
+				<div class="list-top">
+					<input type="text" maxlength="11" placeholder="手机号码" class='check binding-phone'/>
+				</div>
+				<div class="list-bottom">
+					<input type="text" maxlength="6" placeholder="短信验证码" class='check binding-code'/>
+					<button class='code-btm btm'>获取验证码</button>
+				</div>
+				<p class="binding-tip">您的手机号将作为延保查询的依据，请准确绑定</p>
+				<button class='binding-btm btm'>立刻绑定</button>
+			</div>
+		</section>
+	</body>
+	<script src="js/zepto.js"></script>
+	<script src="js/data.js"></script>
+	<script>
+		let regexps = {
+		    vcode: /^(\d{4}){1}(\d{2})?$/,
+		    phone: /^1[34578]\d{9}$/
+		}
+		let dialog = new Dialog();
+		var countdown = 60;
+		let bindingPage = {
+            formData: {
+                phone : '',
+				code : '',
+                createdTime :''
+			},
+			init() {
+				this.getCode()
+				this.submitData()
+			},
+			settime(ele) { //发送验证码倒计时
+				let me =this;
+				me.formData.phone = $('.binding-phone').val();
+				if (!regexps.phone.test(me.formData.phone)) {
+                    dialog.msg({content: '手机号码格式不对'});
+                    $('.binding-phone').val("");
+                    return false;
+                }
+				if (res.success){
+                    countdown = res.time || countdown;
+                    me.countDown(countdown, ele)
+                }else{
+                    dialog.msg({content: "该手机号暂未绑定延保凭证"});
+                }
+			},
+			countDown(num, ele) {
+				var me = this;
+		        if (num == 0) { 
+			        ele.attr('disabled',false); 
+			        ele.removeAttr("disabled");
+			        ele.text("获取验证码");
+			        num = 60; 
+			        return;
+			    }
+				ele.attr('disabled',true);
+		        ele.text("重新发送(" + num + ")");
+		        num--; 
+		        setTimeout(function() { 
+				    me.countDown(num, ele) 
+				},1000)
+			},
+			check () {
+                let me =this, check = true;
+                if (!regexps.phone.test(me.formData.phone)) {
+                    dialog.msg({content: '手机号码格式不对'});
+                    $('.binding-phone').val("");
+                    check = false;
+					return check
+                }
+                if (!regexps.vcode.test(me.formData.code)) {
+                    dialog.msg({content: '验证码格式不对'});
+                    $('.binding-code').val("");
+                    check = false;
+                    return check
+				}
+                return check;
+			},
+			submitData() {
+				let me = this, clickFlag = false;
+				$('.binding-btm').on('click', function(event) {
+					var params, url;
+					me.formData.phone = $('.binding-phone').val();
+	                me.formData.code = $('.binding-code').val();
+	                me.formData.createdTime = new Date().getTime();
+	                
+	                if (!me.check()) {
+	                	return false;
+	                }
+					if (res.success){
+						location.href = "credentials.html?phone="+me.formData.phone
+					}else{
+						dialog.msg({content: res.msg});
+					}
+				})
+			},
+			getCode() {
+				// 重新验证码
+				var me = this;
+				$('.code-btm').click(function() {
+					me.settime($(this));
+				})
+			},
+		}
+		$(function(){
+            bindingPage.init();
+		});
+	</script>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1,maximum-scale=1, minimum-scale=1">
+	    <meta name="format-detection" content="telephone=no"/>
+		<title>延保凭证查询</title>
+		<link rel="stylesheet" href="css/public.css"></link>
+		<link rel="stylesheet" href="css/search.css">
+		<script>
+	      	var deviceWidth = document.documentElement.clientWidth;
+	      	if(deviceWidth > 750) deviceWidth = 750;
+	     	document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+	    </script>
+	</head>
+	<body>
+		<section class="search-wrap">
+			<div class="page-title">
+				<h1>电视延保凭证查询</h1>
+			</div>
+			<ul class="search-nav clearfix">
+				<li class="search-item active phone-search" data-id="phone">
+					<span>手机号查询</span>
+				</li>
+				<li class="search-item code-search" data-id="code">
+					<span>机身码查询</span>
+				</li>
+			</ul>
+			<div class="content-wrap">
+				<div class= "search-content active" id="phone">
+					<input class="search-num  phone" type="text" placeholder="请输入手机号" maxlength="11"/>
+					<button class="search-btm search-phone">提交</button>
+				</div>
+				<div class= "search-content" id="code">
+					<input class="search-num fuselage-code" type="text" placeholder="输入22位机身码" maxlength="22"/>
+					<p class= 'search-tip'>此功能暂时只支持产品开机激活领取的延保查询</p>
+					<button class="search-btm search-code">提交</button>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script src="js/zepto.js"></script>
+	<script src="js/data.js"></script>
+	<script>
+        let regexps = {
+            vcode: /^(\d{4}){1}(\d{2})?$/,
+            phone: /^1[34578]\d{9}$/
+        }
+        let dialog = new Dialog();
+		let searchPage = {
+            phoneData : {
+                phone: ""
+            },
+			fuselageCode : {
+                code: ""
+			},
+			init () {
+				this.tap()
+				this.submitData()
+			},
+			tap () {
+				let me = this;
+				$(".search-nav").on("click",".search-item",function(){
+				    $('.search-item').removeClass('active');
+				    $(this).addClass('active');
+					var dataId = $(this).attr('data-id');
+					$('.search-content').hide();
+					$("#"+dataId).show();
+				})
+			},
+			checkPhone() {
+                let me =this, check = true;
+                if (!regexps.phone.test(me.phoneData.phone)) {
+                    dialog.msg({content: '手机号码格式不对'});
+                    check = false
+                }
+                return check;
+			},
+            checkFuselage () {
+                let me = this, check = true;
+				if (me.fuselageCode.code.length<22) {
+                    dialog.msg({content: '机身码格式不对'});
+                    check = false
+				}
+                return check;
+			},
+            submitData () {
+                let me = this;
+                $('.search-phone').on("click", function () {
+                    me.phoneData.phone = $('.phone').val();
+                    if (!me.checkPhone()) {
+                        $('.phone').val("");
+                        return false;
+                    }
+					if (res.success){
+						location.href = "mywarranty.html?phone="+me.phoneData.phone
+					}else{
+						dialog.msg({content: res.msg});
+					}
+                });
+                $('.search-code').on('click', function() {
+                    me.fuselageCode.code = $('.fuselage-code').val();
+                    if (!me.checkFuselage()) {
+                        $('.fuselage-code').val("");
+                        return false;
+                    }
+					if (res.success){
+						location.href = "mywarranty.html?code="+me.phoneData.code
+					}else{
+						dialog.msg({content: res.msg});
+					}
+				});
+			}
+		}
+		$(function(){
+            searchPage.init()
+		})
+	</script>
+
+</html>

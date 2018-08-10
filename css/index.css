@@ -1,0 +1,89 @@
+body{
+	background: #040f14;
+}
+::-webkit-input-placeholder {
+	color: #5f5263;
+}
+.binding-wrap {
+	width: 100%;
+	padding: 0.96rem 0 0;
+	background: url(../img/bg5.jpg);
+	background-size: cover;
+}
+.english {
+	height: .96rem;
+	font-size: .96rem;
+	font-family: FZLTXHK;
+	text-align: center;
+	color: #6d585e;
+}
+.title-content{
+	font-weight: 700;
+	font-size: .9rem;
+	color: #fff;
+	text-align: center;
+	padding: 0 0.8rem;
+	line-height: .90rem;
+	margin-bottom: 3rem;
+}
+.binding {
+	width: 5.34rem;
+	margin: 0 auto;
+	padding-top:.12rem;
+}
+.binding input {
+	height: .7rem;
+	font-size: .32rem;
+	color: #ccc;
+	list-style: none;
+    outline: 0;
+    border: none;
+    border-bottom: 1px solid #5f5263;
+	background: transparent;
+    padding-left: .58rem;
+    box-sizing: border-box;
+	margin-bottom: .3rem;
+
+}
+.binding-phone {
+	width: 100%;
+}
+.list-bottom {
+	display: flex;
+	justify-content: space-between;
+	flex: 1;
+}
+.binding-code {
+	width: 2.24rem;
+	height: .7rem;
+	flex: 1;
+}
+.code-btm {
+	height: .7rem;
+	font-size: .24rem;
+	line-height: .5rem;
+	border-radius: .35rem;
+	border: 1px solid #5f5263;
+	background: transparent;
+	padding: 0 .24rem;
+	color: #ccc;
+	margin-left: .2rem;
+	outline: none;
+}
+.binding-tip {
+	padding: .1rem;
+	font-size: .22rem;
+	color: #f1f0f1;
+	line-height: .24rem;
+	margin-bottom: .77rem;
+}
+.binding-btm {
+	outline: none;
+	width: 100%;
+	height: .92rem;
+	background: #E85A59 ;
+	border: none;
+	color: #fff;
+	border-radius: .46rem;
+	margin-bottom: 1.3rem;
+}
